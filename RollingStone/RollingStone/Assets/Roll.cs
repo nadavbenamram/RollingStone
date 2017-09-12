@@ -20,6 +20,10 @@ public class Roll : MonoBehaviour {
 	float stepDelta = 0.2f;
 	// Update is called once per frame
 	void Update () {
+		if(Input.GetKeyDown(KeyCode.Escape)){
+			Application.LoadLevel("MainMenu");
+		}
+
 		rotY += stepDelta;
 		if (rotY < -2f || rotY > 2f  )
 		{

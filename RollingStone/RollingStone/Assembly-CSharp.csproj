@@ -46,7 +46,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\ExitGame.cs" />
      <Compile Include="Assets\GrassRoadRace\Script\CameraMove.cs" />
+     <Compile Include="Assets\LoadOnClick.cs" />
+     <Compile Include="Assets\MainMenu.cs" />
      <Compile Include="Assets\Player.cs" />
      <Compile Include="Assets\Roll.cs" />
  <Reference Include="UnityEngine.UI">
