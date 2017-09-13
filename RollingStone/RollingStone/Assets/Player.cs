@@ -1,38 +1,71 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Diagnostics;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour 
 {
-	private const float TIME_FOR_POINT = 1f;
+	private const int NUM_OF_SCORES = 10;
+	private const string SCORE_SUFFIX = "Score";
 
-	private int m_Score;
-	private Stopwatch m_StopWatch;
+	public static int Score;
 	private float m_NextTimeForAddingPoint;
+	private Text m_ScoreText = null;
 
 	// Use this for initialization
 	void Start() 
 	{
+		if (this.name == "TextScore") 
+		{
+			m_ScoreText = GetComponent<Text> () as Text;
+		}
+
 		DontDestroyOnLoad (gameObject);
-		m_Score = 0;
-		m_StopWatch = new Stopwatch();
-		m_StopWatch.Start();
-		m_NextTimeForAddingPoint = TIME_FOR_POINT;
+		Score = 0;
 	}
-	
+
+	private void finishGame()
+	{
+		saveScoreIfInTopTen ();
+		Application.LoadLevel("MainMenu");
+	}
+
 	// Update is called once per frame
 	void Update()
 	{
-		addPointToPlayerOrDecreaseTimer ();
-	}
+		if(Input.GetKeyDown(KeyCode.Escape)){
+			finishGame ();
+		}
 
-	private void addPointToPlayerOrDecreaseTimer()
-	{
-		m_NextTimeForAddingPoint -= Time.deltaTime;
-		if (m_NextTimeForAddingPoint <= 0) 
+		if (m_ScoreText != null) 
 		{
-			m_NextTimeForAddingPoint = TIME_FOR_POINT + m_NextTimeForAddingPoint;
+			m_ScoreText.text = "Score: " + Score;
+		}
+	}
+		
+	private void saveScoreIfInTopTen()
+	{
+		string currentScoreString;
+		int currentScore = Score;
+		int prevScore;
+
+		for (int i = 1; i <= NUM_OF_SCORES; ++i)
+		{
+			currentScoreString = i.ToString () + SCORE_SUFFIX;
+			if (PlayerPrefs.HasKey (currentScoreString)) 
+			{
+				if (PlayerPrefs.GetInt (currentScoreString) < currentScore)
+				{
+					prevScore = PlayerPrefs.GetInt (currentScoreString);
+					PlayerPrefs.SetInt (currentScoreString, currentScore);
+					currentScore = prevScore;
+				}
+			} 
+			else
+			{
+				PlayerPrefs.SetInt(currentScoreString, currentScore);
+				break;
+			}
 		}
 	}
 }
