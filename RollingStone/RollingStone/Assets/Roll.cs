@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class Roll : MonoBehaviour {
 	Rigidbody m_Rigidbody;
-	float m_JumpSpeed = 20f;
+	float m_JumpSpeed = 28f;
 	float m_RollSpeed = 2f;
 	float m_RotateSpeed = 130f;
 	float m_StartingYPos;
+    float m_MinimumDeltaY = 0.4f;
 	bool m_IsJumping;
+    int m_CoinScoreValue = 5;
 
 	// Use this for initialization
 	void Start () {
 		m_Rigidbody = GetComponent<Rigidbody>();
-		m_StartingYPos = transform.position.y;
+		m_StartingYPos = transform.position.y+ m_MinimumDeltaY;
 	}
 
 	float rotY = 2f;
@@ -30,7 +32,7 @@ public class Roll : MonoBehaviour {
 		if (m_IsJumping && (transform.position.y <= m_StartingYPos))
 		{
 			toggleJumpAndIsKinematic();
-			transform.position += new Vector3(0f, m_StartingYPos - transform.position.y, 0);
+			transform.position += new Vector3(0f, (m_StartingYPos - transform.position.y)- m_MinimumDeltaY, 0);
 		}
 		if (!m_IsJumping)
 		{
@@ -39,12 +41,12 @@ public class Roll : MonoBehaviour {
 			{
 				m_Rigidbody.velocity += m_JumpSpeed * Vector3.up;
 			}
-			else if(Input.GetKey(KeyCode.D))
+			else if(Input.GetKey(KeyCode.A))
 			{
 				m_Rigidbody.velocity += m_RollSpeed * Vector3.right;
 				transform.Rotate(Vector3.forward * Time.deltaTime * m_RotateSpeed);
 			}
-			else if (Input.GetKey(KeyCode.A))
+			else if (Input.GetKey(KeyCode.D))
 			{
 				m_Rigidbody.velocity += m_RollSpeed * Vector3.left;
 				transform.Rotate(Vector3.back * Time.deltaTime * m_RotateSpeed);
@@ -54,7 +56,23 @@ public class Roll : MonoBehaviour {
 
 	void toggleJumpAndIsKinematic()
 	{
-		m_Rigidbody.isKinematic = !m_Rigidbody.isKinematic;
-		m_IsJumping = !m_IsJumping;
+        m_IsJumping = !m_IsJumping;
 	}
+
+    private void OnCollisionEnter(Collision hit)
+    {
+        if(hit.transform.tag == "Obstacle")
+        {
+            Player.FinishGame();
+        }
+    }
+
+    private void OnTriggerEnter(Collider hit)
+    {
+        if (hit.transform.tag == "Prize")
+        {
+            Player.Score += m_CoinScoreValue;
+            Destroy(hit.gameObject);
+        }
+    }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour 
 {
@@ -11,30 +12,43 @@ public class Player : MonoBehaviour
 	public static int Score;
 	private float m_NextTimeForAddingPoint;
 	private Text m_ScoreText = null;
+    private float m_SecondsToWaitBeforeCreation = 0.5f;
 
-	// Use this for initialization
-	void Start() 
+    [SerializeField] GameObject m_ParentScene;
+
+    // Use this for initialization
+    void Start() 
 	{
 		if (this.name == "TextScore") 
 		{
 			m_ScoreText = GetComponent<Text> () as Text;
 		}
 
-		DontDestroyOnLoad (gameObject);
+        //DontDestroyOnLoad (gameObject);
 		Score = 0;
-	}
+        StartCoroutine("Create");
+    }
 
-	private void finishGame()
+    IEnumerator Create()
+    {
+        while (true)
+        {
+           (Instantiate(Resources.Load("MovingPlane") as GameObject)).transform.parent = m_ParentScene.transform;
+            yield return new WaitForSeconds(m_SecondsToWaitBeforeCreation);
+        }
+    }
+
+    static public void FinishGame()
 	{
-		saveScoreIfInTopTen ();
-		Application.LoadLevel("MainMenu");
+        saveScoreIfInTopTen ();
+        SceneManager.LoadScene("MainMenu");
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
 		if(Input.GetKeyDown(KeyCode.Escape)){
-			finishGame ();
+			FinishGame ();
 		}
 
 		if (m_ScoreText != null) 
@@ -43,7 +57,7 @@ public class Player : MonoBehaviour
 		}
 	}
 		
-	private void saveScoreIfInTopTen()
+	static private void saveScoreIfInTopTen()
 	{
 		string currentScoreString;
 		int currentScore = Score;
