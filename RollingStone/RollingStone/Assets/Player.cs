@@ -8,11 +8,15 @@ public class Player : MonoBehaviour
 {
 	private const int NUM_OF_SCORES = 10;
 	private const string SCORE_SUFFIX = "Score";
+    private const float MAXIMUM_GAME_SPEED = 0.5f;
+    private const int SECONDS_TO_WAIT_BEFORE_SPEEDING_GAME = 10;
 
 	public static int Score;
 	private float m_NextTimeForAddingPoint;
 	private Text m_ScoreText = null;
-    private float m_SecondsToWaitBeforeCreation = 0.5f;
+    private float m_SecondsToWaitBeforeCreation = 2f;
+    private float m_HowFastToSpeedTheGame = 0.3f;
+    private bool m_SpeededUp = false;
 
     [SerializeField] GameObject m_ParentScene;
 
@@ -55,7 +59,27 @@ public class Player : MonoBehaviour
 		{
 			m_ScoreText.text = "Score: " + Score;
 		}
+
+        // every few seconds speed up the game
+        handleSpeedUpGame();
 	}
+
+    private void handleSpeedUpGame()
+    {
+        if(Timer.StopWatch.Elapsed.Seconds % SECONDS_TO_WAIT_BEFORE_SPEEDING_GAME == 1)
+        {
+            m_SpeededUp = false;
+        }
+        if (m_SecondsToWaitBeforeCreation >= MAXIMUM_GAME_SPEED)
+        {
+            if (!m_SpeededUp && (Timer.StopWatch.Elapsed.Seconds != 0) && (Timer.StopWatch.Elapsed.Seconds % SECONDS_TO_WAIT_BEFORE_SPEEDING_GAME == 0))
+            {
+                Debug.Log("Speeding up from " + m_SecondsToWaitBeforeCreation + " to " + (m_SecondsToWaitBeforeCreation - m_HowFastToSpeedTheGame));
+                m_SpeededUp = true;
+                m_SecondsToWaitBeforeCreation -= m_HowFastToSpeedTheGame;
+            }
+        }
+    }
 		
 	static private void saveScoreIfInTopTen()
 	{

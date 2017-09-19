@@ -8,7 +8,7 @@ public class Timer : MonoBehaviour
 {
 	private const float TIME_FOR_POINT = 1f;
 
-	private Stopwatch m_StopWatch;
+	public static Stopwatch StopWatch;
 	private float m_NextTimeForAddingPoint;
 	private Text m_CounterText = null;
 
@@ -20,8 +20,8 @@ public class Timer : MonoBehaviour
 			m_CounterText = GetComponent<Text> () as Text;
 		}
 
-		m_StopWatch = new Stopwatch();
-		m_StopWatch.Start();	
+		StopWatch = new Stopwatch();
+		StopWatch.Start();	
 		m_NextTimeForAddingPoint = TIME_FOR_POINT;
 	}
 	
@@ -35,6 +35,6 @@ public class Timer : MonoBehaviour
 			m_NextTimeForAddingPoint = TIME_FOR_POINT + m_NextTimeForAddingPoint;
 		}
 
-		m_CounterText.text = m_StopWatch.Elapsed.Hours + ":" + m_StopWatch.Elapsed.Minutes + ":" + m_StopWatch.Elapsed.Seconds;
+		m_CounterText.text = StopWatch.Elapsed.Hours + ":" + StopWatch.Elapsed.Minutes + ":" + StopWatch.Elapsed.Seconds;
 	}
 }
