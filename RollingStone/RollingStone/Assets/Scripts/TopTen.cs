@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class TopTen : MonoBehaviour {
 	private const int NUM_OF_SCORES = 10;
@@ -12,6 +13,18 @@ public class TopTen : MonoBehaviour {
 		loadTopTen ();
 	}
 
+	private void backToMainMenu()
+	{
+		SceneManager.LoadScene("MainMenu");
+	}
+
+	// Update is called once per frame
+	void Update () {
+		if(Input.GetKeyDown(KeyCode.Escape)){
+			backToMainMenu ();
+		}
+	}
+	
 	private void loadTopTen()
 	{
 		int currentScore;
