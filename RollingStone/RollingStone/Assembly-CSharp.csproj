@@ -46,14 +46,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\ExitGame.cs" />
-     <Compile Include="Assets\GrassRoadRace\Script\CameraMove.cs" />
-     <Compile Include="Assets\LoadOnClick.cs" />
-     <Compile Include="Assets\MainMenu.cs" />
-     <Compile Include="Assets\Player.cs" />
-     <Compile Include="Assets\Roll.cs" />
-     <Compile Include="Assets\Timer.cs" />
-     <Compile Include="Assets\TopTen.cs" />
+     <Compile Include="Assets\Content\3D\AssetStore\GrassRoadRace\Script\CameraMove.cs" />
+     <Compile Include="Assets\Scripts\Create.cs" />
+     <Compile Include="Assets\Scripts\Destroy.cs" />
+     <Compile Include="Assets\Scripts\ExitGame.cs" />
+     <Compile Include="Assets\Scripts\LoadOnClick.cs" />
+     <Compile Include="Assets\Scripts\MainMenu.cs" />
+     <Compile Include="Assets\Scripts\MovingPlaneController.cs" />
+     <Compile Include="Assets\Scripts\ObjectCreator.cs" />
+     <Compile Include="Assets\Scripts\PlayerWantsExitChecker.cs" />
+     <Compile Include="Assets\Scripts\ScoreManager.cs" />
+     <Compile Include="Assets\Scripts\StonePlayerController.cs" />
+     <Compile Include="Assets\Scripts\Timer.cs" />
+     <Compile Include="Assets\Scripts\TopTen.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
